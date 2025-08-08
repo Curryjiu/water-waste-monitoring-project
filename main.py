@@ -4,6 +4,7 @@ import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from flask import request
+from datetime import datetime
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database/db.sqlite3'
@@ -28,8 +29,31 @@ def get_image():
     data = request.get_json()
     image_base64 = data.get('image_base64')
     if image_base64:
-        print(image_base64)
-        return "OK"
+        try:
+            # 生成当前时间
+            current_time = datetime.now().isoformat()
+            
+            # 创建新的Object实例
+            new_object = Object(
+                id=current_time,
+                category="",
+                time=current_time,
+                image_base64=image_base64
+            )
+
+            engine = create_engine('sqlite:///database/db.sqlite3')
+            Session = sessionmaker(bind=engine)
+            session = Session()
+            session.add(new_object)
+            session.commit()
+            
+            return "OK"
+        except Exception as e:
+            # 处理数据库操作异常
+            db.session.rollback()
+            return f"Database error: {str(e)}", 500
+        finally:
+            db.session.close()
     return "Missing image_base64 parameter", 400
 
 
