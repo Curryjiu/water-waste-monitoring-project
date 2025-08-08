@@ -380,6 +380,66 @@
         alert('抓拍成功，图片已下载');
     });
 
+    // 每1秒发送当前摄像头画面到/api/image接口
+    let intervalId = null;
+    
+    function sendImage() {
+        if (!stream) return;
+        
+        const canvas = document.createElement('canvas');
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+        
+        const imageBase64 = canvas.toDataURL('image/png').split(',')[1];
+        
+        const apiUrl = `/api/image`;
+        
+        fetch(apiUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                image_base64: imageBase64
+            })
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .catch(error => {
+            console.error('Error sending image:', error);
+        });
+    }
+    
+    // 摄像头启动时开始定时发送
+    startButton.addEventListener('click', async function () {
+        if (stream) {
+            // 停止摄像头
+            stream.getTracks().forEach(track => track.stop());
+            stream = null;
+            video.classList.add('hidden');
+            placeholder.classList.remove('hidden');
+            loading.classList.add('hidden');
+            error.classList.add('hidden');
+            detectionMarkers.classList.add('hidden');
+            startButton.innerHTML = '<i class="fa fa-play"></i><span>启动摄像头</span>';
+            startButton.classList.remove('bg-danger');
+            startButton.classList.add('bg-primary');
+            
+            // 停止定时发送
+            clearInterval(intervalId);
+            intervalId = null;
+        } else {
+            // 启动摄像头成功后开始定时发送
+            intervalId = setInterval(sendImage, 1000);
+        }
+    });
+
     // 为检测标记添加标签
     document.querySelectorAll('#detection-markers > div').forEach(marker => {
         const label = marker.getAttribute('data-label');

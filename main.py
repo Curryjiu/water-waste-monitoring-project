@@ -3,6 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+from flask import request
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database/db.sqlite3'
@@ -22,9 +23,14 @@ class Object(db.Model):
     image_base64 = db.Column(db.TEXT)
 
 #app.route("/api/image",)
-@app.route("/api/get_image")
-def get_image(image_base64:str):
-    print()
+@app.route("/api/image", methods=['POST'])
+def get_image():
+    data = request.get_json()
+    image_base64 = data.get('image_base64')
+    if image_base64:
+        print(image_base64)
+        return "OK"
+    return "Missing image_base64 parameter", 400
 
 
 @app.route('/')
