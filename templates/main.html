@@ -211,7 +211,7 @@
                                     <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-600">{{ obj.id }}</td>
                                     <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-600">{{ obj.category }}</td>
                                     <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-600">{{ obj.time }}</td>
-                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-600">{{ obj.image_base64[:50] }}...</td>
+                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-600"><img src="data:image/png;base64,{{ obj.image_base64 }}" alt="检测图片" class="w-20 h-20 object-cover rounded"></td>
                                 </tr>
                                 {% endfor %}
                             </tbody>
