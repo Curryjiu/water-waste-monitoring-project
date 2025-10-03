@@ -1,44 +1,10 @@
 # Aqua AI--Water Waste Monitoring Project
 
-## Introduction
 A real-time water surface waste detection system that leverages computer vision to identify floating debris, records detection history, and provides a user-friendly web interface for monitoring and management. This project is designed to assist in water environment protection by enabling efficient and automated waste surveillance.
 
 
 ## Project Overview
-This system integrates YOLO11 (You Only Look Once) object detection model with a Flask-based web application to achieve:
-Real-time video streaming from a camera (webcam or external surveillance camera)
-Automated detection and classification of water surface waste (e.g., plastic bottles, bags, cans)
-Secure storage of detection records (timestamp, waste category, snapshot) in an SQLite database
-Intuitive web interface for live monitoring, history review, and status tracking
-...
-
-## System Screenshots 1212
-
-## Results
-
-dsfkjnfewkfnqliwefn
-faolfjneklwa
-fewa
-fa
-wef
-
-fwaefewfaefa
-wef
-aw
-feaw
-ffawefaw
-
-
-![](demo.jpg)
-
-
-# Water Waste Monitoring Project
-
-A real-time water surface waste detection system that leverages computer vision to identify floating debris, records detection history, and provides a user-friendly web interface for monitoring and management. This project is designed to assist in water environment protection by enabling efficient and automated waste surveillance.
-
-
-## Project Overview
-This system integrates **YOLO11 (You Only Look Once)** object detection model with a Flask-based web application to achieve:
+This system integrates **YOLO11** object detection model with a Flask-based web application to achieve:
 - Real-time video streaming from a camera (webcam or external surveillance camera)
 - Automated detection and classification of water surface waste (e.g., plastic bottles, bags, cans)
 - Secure storage of detection records (timestamp, waste category, snapshot) in an SQLite database
