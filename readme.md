@@ -69,8 +69,8 @@ pip install flask sqlalchemy opencv-python ultralytics pillow
    python main.py
    ```
 2. **Access the web interface**:
-   Open your browser and navigate to `http://127.0.0.1:5000` (default Flask port).
-
+   Open your browser and navigate to `http://127.0.0.1:9988` (default Flask port).
+   Or open your browser and navigate to `http://198.18.0.1:9988`.
 
 ### 4. Use the System
 1. On the homepage, click **"Start Camera"** to activate your device's camera.
