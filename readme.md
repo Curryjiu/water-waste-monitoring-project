@@ -1,3 +1,4 @@
+# 1111
 # Aqua AI--Water Waste Monitoring Project
 
 A real-time water surface waste detection system that leverages computer vision to identify floating debris, records detection history, and provides a user-friendly web interface for monitoring and management. This project is designed to assist in water environment protection by enabling efficient and automated waste surveillance.
