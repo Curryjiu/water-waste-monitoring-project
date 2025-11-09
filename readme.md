@@ -1,150 +1,177 @@
-# Water surface garbage detection system
+# Water Surface Garbage Detection System
 
 ## Project Introduction
 
-The water surface garbage detection system is an intelligent monitoring tool based on computer vision technology, using the YOLOv11 object detection algorithm. It supports two modes of real-time monitoring through cameras or video file analysis, automatically identifying and classifying water surface garbage, and helping environmental workers efficiently deal with water pollution problems.
+The Water Surface Garbage Detection System is an intelligent monitoring tool based on computer vision technology, utilizing the YOLOv11 object detection algorithm. It supports two modes: real-time monitoring via cameras and video file analysis. The system can automatically identify and classify water surface garbage, helping environmental workers efficiently address water pollution issues.
 
-The system can accurately identify multiple types of common waste such as kitchen waste, recyclable waste, and electronic waste, and output real-time detection results (including waste name, type, confidence level, and area level). It also supports recording the detection process, providing data support for water ecological governance.
+The system can accurately recognize various common waste types such as kitchen waste, recyclables, and electronic waste, outputting real-time detection results (including garbage name, type, confidence level, and area grade). It also supports recording the detection process, providing data support for water ecological governance.
 
+## Core Features
 
-## Core functions
+| Feature Module | Description |
+|----------------|-------------|
+| Dual-mode Detection | Supports "real-time camera detection" and "video file upload analysis" modes to adapt to different usage scenarios |
+| Intelligent Garbage Recognition | Based on the YOLOv11 algorithm, identifies over 20 common garbage types and automatically classifies them into kitchen waste, recyclables, electronic waste, and other waste |
+| Visual Result Display | Dual-window comparison of "original image" and "detection annotated image", clearly showing garbage information through bounding boxes and text |
+| Detection Result Table | Generates real-time structured tables displaying garbage name, type, confidence, and area grade for easy data recording and analysis |
+| Image Cropping | Supports custom cropping of detection areas (0-1 normalized range) to focus on core monitoring areas and reduce interference |
+| Video Recording | Can record original and detected images (MP4 format), with files named by timestamp for easy subsequent review |
+| History Record Management | Saves detection history data, supporting queries by time, location, garbage type, etc. |
+| Map Visualization | Marks garbage detection locations on a map, supporting viewing of image information at historical detection points |
 
-|Functional module | Specific description|
-|----------|----------|
-|Dual mode detection | Supports two modes of "real-time camera detection" and "video file upload analysis", suitable for different usage scenarios|
-|Intelligent garbage recognition | Based on YOLOv11 algorithm, it identifies 20+common types of garbage and automatically classifies them into kitchen waste, recyclable, electronic, and other garbage|
-|Visualization result display | Dual window comparison display of "original image" and "detection annotation image", with clear display of garbage information in annotation boxes and text|
-|Test result table | Real time generated structured table displaying garbage names, types, confidence levels, and area levels for easy data recording and analysis|
-|Screen cropping | Supports custom cropping detection area (0-1 normalized range), focusing on the core monitoring area to reduce interference|
-|Video recording | Original and detection images can be recorded (in MP4 format), with files named after timestamps for easy backtracking in the future|
-|Progress tracking | Display real-time progress bar during video file detection to intuitively understand processing progress|
+## System Architecture
 
+- **Frontend Layer**: Web interface built with Bootstrap, providing functional modules such as real-time detection, history records, and map view
+- **Application Layer**: Flask backend framework handling HTTP requests, video stream transmission, and business logic
+- **Algorithm Layer**: YOLOv11 object detection algorithm for garbage recognition and classification
+- **Data Layer**: SQLite database storing detection records, location information, and image data
 
 ## Technology Stack
-- **Front end framework**: Streamlit (Quickly build web interfaces, support real-time interaction)
-- Computer Vision: OpenCV (Image Processing), YOLOv11 (Object Detection, Implemented by Ultralytics)
+
+- **Frontend Framework**: Bootstrap 5, JavaScript (real-time refresh and interaction)
+- **Backend Framework**: Flask (Python Web framework)
+- **Computer Vision**: OpenCV (image processing), YOLOv11 (object detection, implemented via Ultralytics)
 - **Programming Language**: Python 3.8+
-- **Dependency Management**: IP (Python Package Management Tool)
+- **Database**: SQLite (lightweight data storage)
+- **Map Service**: Amap API (location visualization)
+- **Dependency Management**: Python package management tool (pip)
 
+## Environment Setup
 
-## Environment construction
+### 1. Hardware Requirements
 
-### 1. Hardware requirements
+- Basic Configuration: CPU i5+/8GB RAM (supports video file analysis)
+- Recommended Configuration: NVIDIA GTX 1650+ GPU (supports real-time camera detection, requires CUDA installation)
 
--Basic configuration: CPU i5+/8GB memory (supports video file analysis)
--Recommended configuration: GPU NVIDIA GTX 1650+(supports real-time camera detection, requires CUDA installation)
+### 2. Software Dependency Installation
 
-
-### 2. Software dependency installation
-1. Clone the project locally (or download the source code):
+1. Clone the project to local (or download source code):
 ```bash
-Git clone<project repository address>
-CD water surface garbage detection system
+git clone <project repository URL>
+cd water-surface-garbage-detection-system
 ```
 
 2. Install dependency packages:
 ```bash
-#Basic dependencies (CPU version)
-pip install streamlit opencv-python numpy ultralytics
+# Basic dependencies (CPU version)
+pip install streamlit opencv-python numpy ultralytics flask geopy
 
-#If using GPU acceleration (CUDA 11.8+needs to be installed first)
-pip install streamlit opencv-python numpy ultralytics torch torchvision torchaudio --index-url  https://download.pytorch.org/whl/cu118
+# For GPU acceleration (requires CUDA 11.8+ installed first)
+pip install streamlit opencv-python numpy ultralytics flask geopy torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
 ```
 
+### 3. Model Preparation
 
-### 3. Model preparation
-The system automatically downloads the YOLOv11 nano pre trained model by default (lightweight, fast, suitable for real-time detection), without the need for manual download.   
-If you need to use a custom training model, you can place the model file (such as ` custom_yolov51. pt `) in the project root directory and specify the model path in ` detector. py `:
+The system automatically downloads the YOLOv11 nano pre-trained model by default (lightweight, fast speed, suitable for real-time detection), no manual download required.
+
+To use a custom trained model, place the model file (e.g., `custom_yolov11.pt`) in the project root directory and specify the model path in `detector.py`:
 ```python
-#Detectability. py initialization method modification
+# Modify initialization method in detector.py
 def __init__(self, model_path="custom_yolov11.pt", confidence_threshold=0.1):
-# . .. Original code ..
+# ... original code ...
 ```
 
 ## Project Structure
+
 ```
-Water surface garbage detection system/
-∝ - app. py # Main application entrance (interface interaction, logic control)
-∝ - detector. py # Detection core module (YOLOv11 call, garbage classification, result drawing)
-∝ - README.md # Project Description Document
-∝ - origina_xxxx.mp4 # Recorded original video (automatically generated, named by timestamp)
-└ - processed_xxxx.mp4 # Recorded detection video (automatically generated, named by timestamp)
+water-surface-garbage-detection-system/
+├── app.py # Main application entry (Flask service, route management, business logic)
+├── camera.py # Video capture related functions
+├── deepseek.py # Code for interacting with Deepseek API
+├── detector.py # Core detection module (YOLOv11 call, garbage classification, result drawing)
+├── detection.db # Database for storing detection data
+├── yolo11n.pt # YOLOv11 nano model file
+├── yolo11m.pt # YOLOv11 medium model file
+├── templates/ # Frontend template files
+│   ├── base.html # Base template
+│   ├── index.html # Real-time detection page
+│   ├── history.html # History records page
+│   ├── map.html # Map view page
+│   └── main.html # Main interface template
+├── uploads/ # Directory for storing uploaded files
+├── screenshots/ # Directory for storing screenshots
+└── README.md # Project description document
 ```
 
+## Usage Tutorial
 
-## Usage tutorial
+### 1. Starting the System
 
-### 1. Start the system
-Execute the following command in the root directory of the project to start the Streamlinet application:
+Execute the following command in the project root directory to start the application:
 ```bash
-streamlit run app.py
+python app.py
 ```
-After execution, the browser will automatically open (default address:` http://localhost:8501 `Go to the system homepage.
+After execution, the browser will automatically open (default address: `http://localhost:5000`) to enter the system homepage.
 
-### 2. Select detection mode
-The system provides two tab pages, corresponding to two detection modes:
+### 2. Selecting Detection Mode
 
+The system provides two tabs corresponding to two detection modes:
 
-#### Mode 1: Real time detection by camera
+#### Mode 1: Real-time Camera Detection
 
-1. In the "Camera Detection" tab, select the available cameras (the system automatically detects connected cameras).
-2. (Optional) Adjust the "Crop Region": Use the slider to set the left/upper/right/lower boundaries (0-1 range), focusing on the core monitoring area.
-3. (Optional) Check "Record Video": When enabled, it will generate two video files: the original image and the detection image (saved in the project root directory).
-4. Click the "Start" button to activate the camera and perform real-time detection. The dual window displays the "Original Screen" and "Detection Screen".
-During the detection process, you can click the "Freeze Screen" button to pause the detection, or click the "Stop" button to end the detection.
-6. The detection result table will be updated in real-time, displaying the garbage information identified in the current frame.
+1. In the "Camera Detection" tab, select an available camera (the system automatically detects connected cameras)
+2. (Optional) Adjust the "Crop Area": Use sliders to set left/top/right/bottom boundaries (0-1 range) to focus on the core monitoring area
+3. (Optional) Check "Record Video": When enabled, two video files (original image and detected image) will be generated (saved in the project root directory)
+4. Click the "Start" button to activate the camera and perform real-time detection, with dual windows displaying "Original Image" and "Detection Image"
+5. During detection, you can click the "Freeze Frame" button to pause detection or the "Stop" button to end detection
+6. The detection result table will update in real-time, showing garbage information identified in the current frame
 
+#### Mode 2: Video File Analysis
 
-### #Mode 2: Video File Analysis
+1. In the "Video File Detection" tab, click "Upload Video" and select a video file in MP4/AVI/MOV/MKV format
+2. (Optional) Adjust the "Crop Area": Same as camera mode, focusing on the core area
+3. (Optional) Check "Record Video": When enabled, saves the detection process video
+4. Click the "Start" button, and the system will start analyzing the video, with a progress bar showing the processing progress
+5. After video processing is complete, the system will prompt "Video processing completed", and you can view the historical detection result table
 
-1. On the "Video File Detection" tab, click on "Upload Video" and select a video file in MP4/AVI/MOV/MKV format.
-2. (Optional) Adjust the "Crop Area": In the same camera mode, focus on the core area.
-3. (Optional) Check "Record Video": Once enabled, save the video of the detection process.
-4. Click the "Start" button, the system will start analyzing the video, and the progress bar will display the processing progress.
-After the video processing is completed, the system will prompt "Video processing completed", and you can view the historical detection result table.
+### 3. Result Explanation
 
+The detection result table contains the following fields:
 
-###  3. Result Description
+- Garbage Name: Specific category of identified garbage (e.g., "bottle", "banana peel")
+- Garbage Type: Classification result (kitchen waste, recyclables, electronic waste, other waste)
+- Confidence: Recognition accuracy (0-1, higher values are more reliable, default threshold is 0.1)
+- Area Grade: Size of garbage relative to the image (L1: area ≤ 5%, L2: area > 5%)
 
-The test result table contains the following fields:
+### 4. Other Features
 
-- Garbage name: The specific category of garbage identified (such as "bottle", "banana").
-- Garbage type: Classification results (kitchen waste, recyclable waste, electronic waste, other waste).
-- Confidence: Recognition accuracy (0-1, higher values are more reliable, default threshold is 0.1).
-- * Area level**: The size of garbage relative to the image (L1: area ≤ 5%, L2: area>5%).
+- **History Records**: Click "Detection History" in the navigation bar to view all detection records, including time, location, garbage type, and detection images
+- **Map View**: Click "Map View" to see the distribution of historical detection points on a map; click markers to view corresponding detection images
 
 ## Frequently Asked Questions
 
-### 1. After startup, it prompts' No available cameras detected '
-- Check if the camera is connected to the computer (USB camera needs to be securely plugged in).
-- Close other applications that occupy the camera (such as Zoom, WeChat Video).
-- If using the built-in camera in the laptop, make sure it is not disabled by the system.
+### 1. "No available cameras detected" prompt after startup
 
-###  2. Slow detection speed (stuttering)
--Switch to CPU lightweight mode: Ensure to use the 'yolo11n. pt' model (default) and avoid using large models (such as' yolo11n.pt').
--Reduce video resolution: Modify the video save resolution in app. py (default 640x480).
--Enable GPU acceleration: Install CUDA and use the GPU version PyTorch (refer to step 2 of "Environment setup").
+- Check if the camera is connected to the computer (USB cameras need to be securely plugged in)
+- Close other applications using the camera (such as Zoom, WeChat Video)
+- If using a laptop's built-in camera, ensure it is not disabled by the system
 
-### 3. Recording video without output
--Check the root directory permissions of the project: Ensure that the current user has write permission (Windows needs to run the terminal as an administrator, Linux/MacOS can execute 'chmod 755.' to grant permission).
--Confirm that 'Record Video' is checked: Only by clicking 'Start' after checking it will the recording file be generated.
+### 2. Slow detection speed (stuttering)
 
-###  4. Low accuracy of garbage recognition
--Adjust the confidence threshold: Increase the confidence threshold in 'detector. py' (e.g. from 0.1 to 0.3) to filter out low confidence results.
--Use custom model: retrain YOLOv11 based on the surface garbage dataset and replace the default model.
--Optimize shooting environment: Ensure sufficient lighting to avoid blurry images or garbage being obstructed.
+- Switch to CPU lightweight mode: Ensure using the `yolo11n.pt` model (default) and avoid using large models
+- Reduce video resolution: Modify the video save resolution in app.py (default 640x480)
+- Enable GPU acceleration: Install CUDA and use GPU version PyTorch (refer to step 2 of "Environment Setup")
 
-## System Introduction
-This water surface garbage detection system is based on computer vision technology, aiming to solve the problems of low efficiency and high labor costs in water surface garbage monitoring. Core advantages of the system:
-1. **Efficient real-time**: YOLOv11 algorithm supports detection at over 30 frames per second, meeting real-time monitoring requirements.
-2. Multi class recognition: covering 20+types of waste in four categories: kitchen waste, recyclables, electronics, and others, suitable for complex water environments.
-3. **Strong usability**: No professional technical background is required, and detection operations can be completed through a visual interface.
-4. **Data Traceability**: Supports video recording and result table export, facilitating subsequent data analysis and report generation.
+### 3. No output when recording video
 
-We are committed to supporting environmental protection through technological innovation and providing efficient and intelligent solutions for water ecological governance.
+- Check project root directory permissions: Ensure the current user has write permissions (Windows needs to run the terminal as administrator; Linux/MacOS can execute `chmod 755 .` to grant permissions)
+- Confirm "Record Video" is checked: Recording files are only generated when clicking "Start" after checking this option
 
+### 4. Low garbage recognition accuracy
+
+- Adjust confidence threshold: Increase the confidence threshold in `detector.py` (e.g., from 0.1 to 0.3) to filter out low-confidence results
+- Use custom model: Retrain YOLOv11 based on water surface garbage datasets and replace the default model
+- Optimize shooting environment: Ensure sufficient lighting, avoid blurry images or obscured garbage
+
+## System Features
+
+1. **Efficient Real-time Performance**: YOLOv11 algorithm supports detection speeds above 30 frames per second, meeting real-time monitoring needs
+2. **Multi-class Recognition**: Covers over 20 waste types in four categories (kitchen, recyclables, electronic, other), adapting to complex water environments
+3. **User-friendly**: No professional technical background required; detection operations can be completed through a visual interface
+4. **Data Traceability**: Supports video recording and result table export, facilitating subsequent data analysis and report generation
 
 ## Contact Information
-If you have any questions or suggestions, you can contact us through the following methods:
--Developer email:< your-email@example.com >
--Project Warehouse:< https://github.com/your-username/ Surface Garbage Detection System>(Example Address)
+
+If you have any questions or suggestions, please contact us through:
+- Developer Email: <Curryjiu@example.com>
+- Project Repository: <https://github.com/Curryjiu/water-waste-monitoring-project>
