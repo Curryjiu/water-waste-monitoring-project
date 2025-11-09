@@ -1,4 +1,4 @@
-# Water Surface Garbage Detection System
+# Aqua AI - Water Surface Garbage Detection System
 
 ## Project Introduction
 
