@@ -7,7 +7,7 @@ The Water Surface Garbage Detection System is an intelligent monitoring tool bas
 The system can accurately recognize various common waste types such as kitchen waste, recyclables, and electronic waste, outputting real-time detection results (including garbage name, type, confidence level, and area grade). It also supports recording the detection process, providing data support for water ecological governance.
 
 <div align="center">
-  <img src="images/Background.png" alt="Water Surface Garbage Detection System Interface" width="800">
+  <img src="images/Background.png" alt="Water Surface Garbage Detection System Interface" width="700">
   <p><em>Figure 1: System Interface & Real-time Detection Demo</em></p>
 </div>
 
